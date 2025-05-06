@@ -5,13 +5,13 @@ from tqdm import tqdm
 
 class BlackjackMC:
     """
-    Monte Carlo Blackjack agent
+    Monte Carlo Blackjack agent, with an epsilon-greedy policy.
     """
 
     def __init__(self, env: gym.Env, epsilon: float = 0.1, discount_factor: float = 0.9):
         """
         :param env: The gymnasium Blackjack environment.
-        :param epsilon: Probability to choose a random action during training, instead of the recommend one.
+        :param epsilon: Parameter influencing the probability to choose a random action during training, instead of the recommend one.
         :param discount_factor: The discount factor of the agent.
         """
         self.env = env

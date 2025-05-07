@@ -38,7 +38,7 @@ class MountainCarQ:
         self.final_epsilon = final_epsilon
         self.epsilon_decay = epsilon_decay
 
-        self.Q = defaultdict(lambda: np.zeros(action_discretization, dtype=np.float64))
+        self.Q = defaultdict(lambda: np.zeros(action_bins, dtype=np.float64))
 
         self.trained = False
 

@@ -2,6 +2,7 @@ from collections import defaultdict
 import numpy as np
 import gymnasium as gym
 from tqdm import tqdm
+import pickle
 
 class MountainCarQ:
     """
@@ -37,6 +38,8 @@ class MountainCarQ:
         self.epsilon = initial_epsilon
         self.final_epsilon = final_epsilon
         self.epsilon_decay = epsilon_decay
+
+        self.action_bins = action_bins
 
         self.Q = defaultdict(lambda: np.zeros(action_bins, dtype=np.float64))
 
@@ -129,3 +132,32 @@ class MountainCarQ:
             np.clip(np.digitize(observation[1], self.possible_velocities, right=True), 0, len(self.possible_velocities) - 1)
         )
         return [self.possible_actions[np.argmax(self.Q[obs_arg])]]
+
+    def save_model(self, filename: str):
+        """
+        Save the Q table.
+
+        :param filename: File to save the Q table.
+        """
+        with open(filename, 'wb') as file:
+            pickle.dump(dict(self.Q), file)
+    
+    def load_model(self, filename: str):
+        """
+        Load the Q table.
+
+        :param filename: File to load the Q table from.
+        """
+        with open(filename, 'rb') as file:
+            Q_dict = pickle.load(file)
+            self.Q = defaultdict(lambda: np.zeros(self.action_bins), Q_dict)
+        self.trained = True
+
+    def save_reward_history(self, filename: str):
+        """
+        Save the reward history as a numpy array.
+
+        :param filename: File to save the reward history.
+        """
+        with open(filename, 'wb') as file:
+            pickle.dump(np.array(self.reward_history), file)

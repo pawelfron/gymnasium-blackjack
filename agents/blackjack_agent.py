@@ -2,6 +2,7 @@ from collections import defaultdict
 import numpy as np
 import gymnasium as gym
 from tqdm import tqdm
+import pickle
 
 class BlackjackMC:
     """
@@ -83,4 +84,32 @@ class BlackjackMC:
         :returns: 0, if the action is STICK, 1 if it's HIT.
         """
         return np.argmax(self.Q[state]) 
-                    
+
+    def save_model(self, filename: str):
+        """
+        Save the Q table.
+
+        :param filename: File to save the Q table.
+        """
+        with open(filename, 'wb') as file:
+            pickle.dump(dict(self.Q), file)
+    
+    def load_model(self, filename: str):
+        """
+        Load the Q table.
+
+        :param filename: File to load the Q table from.
+        """
+        with open(filename, 'rb') as file:
+            Q_dict = pickle.load(file)
+            self.Q = defaultdict(lambda: np.zeros(self.n), Q_dict)
+        self.trained = True
+
+    def save_reward_history(self, filename: str):
+        """
+        Save the reward history as a numpy array.
+
+        :param filename: File to save the reward history.
+        """
+        with open(filename, 'wb') as file:
+            pickle.dump(np.array(self.reward_history), file)

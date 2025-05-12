@@ -51,7 +51,7 @@ class MountainCarQ:
         if self.epsilon > self.final_epsilon:
             self.epsilon -= self.epsilon_decay
 
-    def _action_selection(self, observation):
+    def _policy(self, observation):
         """
         With the probability of epsilon, selects a random action, otherwise selects the recommended one.
 
@@ -103,7 +103,7 @@ class MountainCarQ:
             total_reward = 0
             done = False
             while not done:
-                action = self._action_selection(observation)
+                action = self._policy(observation)
 
                 next_observation, reward, terminated, truncated, _ = self.env.step(action)
                 self._update_q(observation, action, next_observation, reward)
